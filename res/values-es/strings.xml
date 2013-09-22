@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">XPMB</string>
+    <string name="strIncorrectDevice">¡Tu dispositivo no es un XPERIA Play!\r\nNo puedes ejecutar esta aplicación.</string>
+    <string name="ivRunGame_desc">Iniciar Juego</string>
+    <string name="ivCover_desc">Carátula del Juego</string>
+    <string name="lbGameName_deftext">Juegos GBA</string>
+    <string name="lbGameName_desc">Nombre del Juego</string>
+    <string name="strCoverNotFound">Carátula no encontrada</string>
+    <string name="lbGameDescription_defText">No se ha encontrado ningún juego en el directorio de juegos para la Game Boy Advance. Puede cargar algunos juegos utilizando la aplicación de escritorio proporcionada por la ROM en la carpeta sdcard/GameManager.</string>
+    <string name="ivNextGame_desc">Siguiente Juego</string>
+    <string name="ivPrevGame_desc">Juego Anterior</string>
+    <string name="lbGameDescription_desc">Descripción del juego.</string>
+    <string name="strLangEn">Inglés</string>
+    <string name="strLangEs">Español</string>
+    <string name="strLangFr">Francés</string>
+    <string name="strLangIt">Italiano</string>
+    <string name="strLangDe">Alemán</string>
+    <string name="strLangCh">Chino</string>
+    <string name="strLangKo">Coreano</string>
+    <string name="strLangJa">Japonés</string>
+    <string name="strLangNl">Holandés</string>
+    <string name="strBackKeyHint">Presione otra vez la tecla atrás/círculo para salir</string>
+    <string name="strNoVideos">No hay videos.\r\nPuede importar contenido desde una PC.\r\nPara detalles, refiérase a la wiki en (uri de la wiki aquí)</string>
+    <string name="strNoPictures">No hay imágenes.\r\nPuede importar contenido desde una PC.\r\nPara detalles, refiérase a la wiki en (uri de la wiki aquí)</string>
+    <string name="strNoMusic">No hay pistas.\r\nPuede importar contenido desde una PC.\r\nPara detalles, refiérase a la wiki en (uri de la wiki aquí)</string>
+    <string name="strNoGames">No hay juegos.\r\nPuede importar contenido desde una PC.\r\nPara detalles, refiérase a la wiki en (uri de la wiki aquí)</string>
+    <string name="strNoApps">No hay aplicaciones.\r\nPuede instalar aplicaciones desde la tienda Play Store.\r\nPara detalles, refiérase a la wiki en (uri de la wiki aquí)</string>
+    <string name="strAppNotInstalled">Aún no ha instalado la aplicación \'%s\'.\r\nPor favor instálela antes de continuar.</string>
+
+</resources>

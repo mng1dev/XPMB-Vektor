@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmbroot>
+
+    <item
+        id="Settings"
+        icon="ui_xmb_settings">
+        <subitem
+            id="File Explorer"
+            exec="com.estrongs.android.pop/.view.FileExplorerActivity"
+            icon="ui_xmb_settings_system"
+            type="exec" />
+        <subitem
+            id="System settings"
+            exec="com.android.settings/.Settings"
+            icon="ui_xmb_settings_system"
+            type="exec" />
+    </item>
+    <item
+        id="Photos"
+        icon="ui_xmb_photo">
+        <subitem
+            id="Camera"
+            exec="com.android.gallery3d/com.android.camera.CameraLauncher"
+            icon="ui_xmb_photo_camera"
+            type="exec" />
+    </item>
+    <item
+        id="Music"
+        icon="ui_xmb_music">
+        <subitem
+            id="Player"
+            exec="com.mxtech.videoplayer.ad/.ActivityVideoList"
+            icon="ui_status_media_play"
+            type="exec" />
+    </item>
+    <item
+        id="Video"
+        icon="ui_xmb_video">
+        <subitem
+            id="Player"
+            exec="com.mxtech.videoplayer.ad/.ActivityVideoList"
+            icon="ui_status_media_play"
+            type="exec" />
+    </item>
+    <item
+        id="Games"
+        icon="ui_xmb_games">
+        <subitem
+            id="Get Roms"
+            exec="com.vektor.romdownloader/.MainActivity"
+            icon="ui_xmb_getroms"
+            type="exec" />
+        <subitem
+            id="Gameboy Advance"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_GBA"
+            type="submenu.half" />
+        <subitem
+            id="Gameboy Color"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_GBC"
+            type="submenu.half" />
+        <!--
+       <subitem
+            id="NeoGeo Arcade"
+            icon="ui_xmb_game_folder" />
+       <subitem
+            id="Nintendo 64"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_N64"
+            type="submenu.half" />
+        -->
+        <subitem
+            id="Nintendo DS"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_DS"
+            type="submenu.half" />
+        <subitem
+            id="Nintendo Entertainment System"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_NES"
+            type="submenu.half" />
+        <subitem
+            id="PC Engine/TurboGrafx-16"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_PCE"
+            type="submenu.half" />
+        <subitem
+            id="PlayStation"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_PSX"
+            type="submenu.half" />
+        <subitem
+            id="Sega Master System"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_SMS"
+            type="submenu.half" />
+        <subitem
+            id="Sega MegaDrive/Genesis"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_MD"
+            type="submenu.half" />
+        <subitem
+            id="Super Nintendo"
+            icon="ui_xmb_game_folder"
+            submenu="XPMB_Submenu_SNES"
+            type="submenu.half" />
+        <subitem
+            id="RetroArch Settings"
+            exec="org.retroarch/.browser.MainMenuActivity"
+            icon="ui_xmb_settings_system"
+            type="exec" />
+    </item>
+    <item
+        id="Net"
+        icon="ui_xmb_web">
+        <subitem
+            id="Web browser"
+            exec="com.android.browser/.BrowserActivity"
+            icon="ui_xmb_web_browser"
+            type="exec" />
+        <subitem
+            id="Internet search"
+            exec="com.google.android.googlequicksearchbox/.SearchActivity"
+            icon="ui_xmb_web_search"
+            type="exec" />
+    </item>
+    <item
+        id="Applications"
+        icon="ui_xmb_apps">
+        <subitem
+            id="Play Store"
+            exec="com.android.vending/.AssetBrowserActivity"
+            icon="ui_playstore"
+            type="exec" />
+        <subitem
+            id="Installed applications"
+            icon="ui_xmb_apps_installed"
+            submenu="XPMB_Submenu_APP"
+            type="submenu.half" />
+    </item>
+
+</xmbroot>

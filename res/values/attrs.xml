@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="alpha" format="float" />
+    <attr name="scaleX" format="float" />
+    <attr name="scaleY" format="float" />
+
+    <declare-styleable name="com.raddstudios.xpmb.utils.backports.XPMB_ImageView">
+        <attr name="alpha" />
+        <attr name="scaleX" />
+        <attr name="scaleY" />
+    </declare-styleable>
+    <declare-styleable name="com.raddstudios.xpmb.utils.backports.XPMB_TextView">
+        <attr name="alpha" />
+        <attr name="scaleX" />
+        <attr name="scaleY" />
+    </declare-styleable>
+    <declare-styleable name="com.raddstudios.xpmb.utils.backports.XPMB_LinearLayout">
+        <attr name="alpha" />
+        <attr name="scaleX" />
+        <attr name="scaleY" />
+    </declare-styleable>
+    <declare-styleable name="com.raddstudios.xpmb.utils.backports.XPMB_RelativeLayout">
+        <attr name="alpha" />
+        <attr name="scaleX" />
+        <attr name="scaleY" />
+    </declare-styleable>
+    <declare-styleable name="com.raddstudios.xpmb.utils.backports.XPMB_TableLayout">
+        <attr name="alpha" />
+        <attr name="scaleX" />
+        <attr name="scaleY" />
+    </declare-styleable>
+    <declare-styleable name="com.raddstudios.xpmb.utils.backports.XPMB_TableRow">
+        <attr name="alpha" />
+        <attr name="scaleX" />
+        <attr name="scaleY" />
+    </declare-styleable>
+
+</resources>

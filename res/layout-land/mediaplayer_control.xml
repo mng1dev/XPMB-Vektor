@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.raddstudios.xpmb.utils.backports.XPMB_RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:backports="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playerc_l"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ProgressBar
+        android:id="@+id/pbCurPos"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp" />
+
+    <com.raddstudios.xpmb.utils.backports.XPMB_TextView
+        android:id="@+id/tvTotalLen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/pbCurPos"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:shadowColor="#000000"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="8"
+        android:text="/ 00:00"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:ignore="HardcodedText" />
+
+    <com.raddstudios.xpmb.utils.backports.XPMB_TextView
+        android:id="@+id/tvCurPos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tvTotalLen"
+        android:layout_marginRight="6dp"
+        android:layout_toLeftOf="@id/tvTotalLen"
+        android:shadowColor="#0077AA"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="8"
+        android:text="00:00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#0099EE"
+        tools:ignore="HardcodedText" />
+
+    <com.raddstudios.xpmb.utils.backports.XPMB_ImageView
+        android:id="@+id/ivPlayStatus"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="2dp"
+        android:src="@drawable/ui_status_media_play"
+        tools:ignore="ContentDescription" />
+
+</com.raddstudios.xpmb.utils.backports.XPMB_RelativeLayout>
