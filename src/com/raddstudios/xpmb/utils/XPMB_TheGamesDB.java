@@ -15,12 +15,12 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.raddstudios.xpmb.utils.Serialization.gameClass;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -34,11 +34,27 @@ import android.util.Log;
 
 public class XPMB_TheGamesDB {
 
+	private static class XPMB_TheGamesDBClient {
+		public static final AsyncHttpClient client = new AsyncHttpClient();
+		private static final String BASEURL = "http://thegamesdb.net/api/";
+
+		public static void get(String url, RequestParams params,
+				AsyncHttpResponseHandler responseHandler) {
+			client.get(getAbsoluteUrl(url), params, responseHandler);
+		}
+
+		private static String getAbsoluteUrl(String relativeUrl) {
+			return BASEURL + relativeUrl;
+		}
+	}
+
+	
 	private static final int THRESHOLD = 50;
 	private String platform;
 	private String gameName;
 	private Activity callerActivity;
 	private File romRoot;
+
 	public XPMB_TheGamesDB(File romRoot, Activity callerActivity,
 			String gameName) {
 		this(romRoot, callerActivity, gameName, null);
@@ -51,84 +67,22 @@ public class XPMB_TheGamesDB {
 		this.platform = platform;
 		this.callerActivity = callerActivity;
 	}
-
-	private String getXmlFromUrl(String url) {
-		String xml = null;
-		try {
-			DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(url);
-
-			HttpResponse httpResponse = httpClient.execute(httpPost);
-			HttpEntity httpEntity = httpResponse.getEntity();
-			xml = EntityUtils.toString(httpEntity);
-
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// return XML
-		return xml;
-	}
-
-	@SuppressWarnings("deprecation")
-	private final String getCoverLink() {
-		long start = System.currentTimeMillis();
-		int i = 0;
-		String coverURL = null;
-
-		String cleanedGN = this.gameName.split("\\[")[0].split("\\(")[0];
-		String URL = "http://thegamesdb.net/api/GetGamesList.php?name="
-				+ URLEncoder.encode(cleanedGN);
-		if (null != this.platform && !this.platform.equalsIgnoreCase("other")) {
-			try {
-				int matchRate = 0;
-				String gameid = null;
-				URL += "&platform=" + URLEncoder.encode(getPlatform());
-				String xml = getXmlFromUrl(URL);
-				Serializer serializer = new Persister();
-				Data data = serializer.read(Data.class, xml);
-				Log.i("Data", "Data " + data.toString());
-				for (Game g : data.getGames()) {
-					if (i < 4) {
-						int rate = stringMatch(g.getTitle(), cleanedGN);
-						if (rate > matchRate) {
-							matchRate = rate;
-							gameid = Integer.toString(g.getId());
-							if (matchRate == 101)
-								break;
-						}
-						i++;
-					} else
-						break;
-				}
-				if (null != gameid && matchRate > XPMB_TheGamesDB.THRESHOLD) {
-					String URL2 = "http://thegamesdb.net/api/GetGame.php?id="
-							+ gameid;
-					String xml2 = this.getXmlFromUrl(URL2);
-					GameData gd = serializer.read(GameData.class, xml2);
-					String baseURL = gd.getBaseImgUrl();
-					for (BoxArt ba : gd.getGame().getBoxArts()) {
-						if (null != ba.getSide()
-								&& ba.getSide().equalsIgnoreCase("front")) {
-							coverURL = baseURL + ba.getThumb();
-						}
-					}
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	
+	private static String xml = null;
+	private void getXmlFromUrl(String url) {
+		AsyncHttpResponseHandler resHandlerDir = new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(String response) {
+				Log.i("Success", "OK="+response);
+				XPMB_TheGamesDB.xml = response;
 			}
-		}
-		Log.i("Performance",
-				"(" + gameName + ") Time="
-						+ (System.currentTimeMillis() - start)
-						+ "ms. Attempts=" + (1 + i) + ". Result=" + coverURL);
-		return coverURL;
+		};
+		
+		
+		// return XML
+		return;
+		
 	}
-
 	
 
 
@@ -195,106 +149,78 @@ public class XPMB_TheGamesDB {
 		return rate;
 
 	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private Long dlid = null;
 	public Long DownloadFromUrl() {
 		if (this.isOnline()) {
-			String clink = getCoverLink();
-			String DownloadUrl = (clink==null? null : clink.replace("http://", ""));
-			if (DownloadUrl != null) {
-				if (!romRoot.exists()) {
-					romRoot.mkdirs();
-				}
-				DownloadUrl = ("http://" + Uri.encode(DownloadUrl)).replace(
-						"%2F", "/");
-				File file = new File(romRoot, this.gameName + "-CV.jpg");
-				DownloadManager manager = (DownloadManager) callerActivity
-						.getSystemService(Activity.DOWNLOAD_SERVICE);
-				Request req = new Request(Uri.parse(DownloadUrl))
-						.setNotificationVisibility(Request.VISIBILITY_VISIBLE)
-						.setTitle(this.gameName)
-						.setDescription(getPlatform())
-						.setDestinationUri(Uri.fromFile(file))
-						.setAllowedNetworkTypes(
-								Request.NETWORK_MOBILE | Request.NETWORK_WIFI);
-				long dlId = manager.enqueue(req);
-
-				return dlId;
+			getCoverLink();
+		}
+		while(dlid==null){}
+		return (dlid==-1?null:dlid);
+	}
+	private String coverURL = null;
+	@SuppressWarnings("deprecation")
+	private final void getCoverLink() {
+		final long start = System.currentTimeMillis();
+		
+		final String cleanedGN = gameName.split("\\[")[0].split("\\(")[0];
+		String URL = "GetGame.php?name="
+				+ URLEncoder.encode(cleanedGN);
+		if (null != this.platform && !this.platform.equalsIgnoreCase("other")) {
+			URL += "&platform=" + URLEncoder.encode(getPlatform());
+		}
+		AsyncHttpResponseHandler resHandlerDir = new AsyncHttpResponseHandler() {
+			@Override
+			public void onFailure(Throwable error){
+				dlid=(long) -1;
 			}
-			return null;
-
-		}
-		return null;
+			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+			@Override
+			public void onSuccess(String response) {
+				Log.i("Success", "OK");
+				XPMB_TheGamesDB.xml = response;
+				int matchRate = 0, bestMatchId = -1;
+				ArrayList<gameClass> games = XPMB_GameSAXParser.parse(xml);
+				for(int j=0;j<games.size();j++){
+					int rate = stringMatch(games.get(j).getTitle(),cleanedGN);
+					if(rate > matchRate && rate > XPMB_TheGamesDB.THRESHOLD){
+						matchRate = rate; 
+						bestMatchId = j;
+						if(matchRate == 101) break;
+					}
+				}
+				if(bestMatchId >-1) coverURL = XPMB_GameSAXParser.getBaseURL() + games.get(bestMatchId).getURL();
+				int i = 0;
+				i=bestMatchId;
+				Log.i("Performance",
+						"(" + gameName + ") Time="
+								+ (System.currentTimeMillis() - start)
+								+ "ms. Attempts=" + (i) + ". Result=" + coverURL);
+				String DownloadUrl = (coverURL == null ? null : coverURL.replace(
+						"http://", ""));
+				if (DownloadUrl != null) {
+					if (!romRoot.exists()) {
+						romRoot.mkdirs();
+					}
+					DownloadUrl = ("http://" + Uri.encode(DownloadUrl)).replace(
+							"%2F", "/");
+					File file = new File(romRoot, gameName + "-CV.jpg");
+					DownloadManager manager = (DownloadManager) callerActivity
+							.getSystemService(Activity.DOWNLOAD_SERVICE);
+					Request req = new Request(Uri.parse(DownloadUrl))
+							.setNotificationVisibility(Request.VISIBILITY_VISIBLE)
+							.setTitle(gameName)
+							.setDescription(getPlatform())
+							.setDestinationUri(Uri.fromFile(file))
+							.setAllowedNetworkTypes(
+									Request.NETWORK_MOBILE | Request.NETWORK_WIFI);
+					long dlId = manager.enqueue(req);
+					dlid = dlId;
+					//return dlId;
+				}
+				//return null;
+				
+			}
+		};
+		XPMB_TheGamesDBClient.get(URL, null,resHandlerDir);
 	}
-
-	@Root(name = "Data")
-	public static class Data {
-		@ElementList(inline = true, required = false)
-		private List<Game> list = new ArrayList<Game>();
-
-		public List<Game> getGames() {
-			return list;
-		}
-	}
-
-	
-	
-	@Root(name = "Game", strict = false)
-	public static class Game {
-		@Element(name = "id")
-		private int id;
-		@Element(name = "GameTitle")
-		private String GameTitle;
-
-		public String getTitle() {
-			return GameTitle;
-		}
-
-		public int getId() {
-			return id;
-		}
-	}
-
-	@Root(name = "Data", strict = false)
-	public static class GameData {
-		@Element(name = "baseImgUrl")
-		private String baseImgUrl;
-		@Element(name = "Game")
-		private GameInfo Game;
-
-		public String getBaseImgUrl() {
-			return baseImgUrl;
-		}
-
-		public GameInfo getGame() {
-			return Game;
-		}
-	}
-
-	@Root(name = "Game", strict = false)
-	public static class GameInfo {
-		@ElementList(name = "Images")
-		private List<BoxArt> boxarts = new ArrayList<BoxArt>();
-
-		public List<BoxArt> getBoxArts() {
-			return boxarts;
-		}
-	}
-
-	@Root(name = "boxart", strict = false)
-	public static class BoxArt {
-		@Attribute(name = "side", required = false)
-		private String side;
-		@Attribute(name = "thumb", required = false)
-		private String thumb;
-
-		public String getSide() {
-			return side;
-		}
-
-		public String getThumb() {
-			return thumb;
-		}
-	}
-
 }
